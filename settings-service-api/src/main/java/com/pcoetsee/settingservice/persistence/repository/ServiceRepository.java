@@ -25,20 +25,19 @@
 package com.pcoetsee.settingservice.persistence.repository;
 
 import com.pcoetsee.settingservice.persistence.dao.ServiceDAO;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * This repository represents the methods used for CRUD operations performed on the `settings_service`.`services` table.
  */
 @Repository
-public interface ServiceRepository extends CrudRepository<ServiceDAO, Long> {
+public interface ServiceRepository extends PagingAndSortingRepository<ServiceDAO, Long> {
     /**
-     * This method finds a specific service by matching a name and a password.
+     * This method finds a specific service by matching the name.
      *
-     * @param name     the name of the service we're looking for, null or empty returns null
-     * @param password the password of the service we are looking for, null or empty returns null
-     * @return a service, but only if the supplied name and password find a match in the database, otherwise null
+     * @param name the name of the service we're looking for, null or empty returns null
+     * @return a service, but only if the supplied name finds a match in the database, otherwise null
      */
-    ServiceDAO getServiceDAOByNameAndPassword(String name, String password);
+    ServiceDAO findByName(String name);
 }

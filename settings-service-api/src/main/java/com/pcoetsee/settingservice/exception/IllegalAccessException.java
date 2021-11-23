@@ -22,80 +22,14 @@
  * SOFTWARE.
  */
 
-CREATE SCHEMA IF NOT EXISTS `settings_service`
-;
+package com.pcoetsee.settingservice.exception;
 
-CREATE TABLE IF NOT EXISTS `settings_service`.`services`
-(
-    `id` BIGINT
-(
-    20
-) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR
-(
-    256
-) NOT NULL,
-    `password` VARCHAR
-(
-    2048
-) NOT NULL,
-    `role` ENUM
-(
-    'FULL',
-    'CREATE',
-    'READ'
-) NOT NULL DEFAULT 'READ',
-    `creation_time` BIGINT
-(
-    20
-) NOT NULL,
-    CONSTRAINT `pk_services_id` PRIMARY KEY
-(
-    `id`
-),
-    INDEX `idx_services_name`
-(
-    `name`
-)
-    )
-    Engine = InnoDB
-;
+/**
+ * Exception that will be thrown when an authenticated service attempts to do something that they are not allowed to do.
+ */
+public class IllegalAccessException extends Exception {
 
-CREATE TABLE IF NOT EXISTS `settings_service`.`settings`
-(
-    `id` BIGINT
-(
-    20
-) NOT NULL AUTO_INCREMENT,
-    `service_id` BIGINT
-(
-    20
-) NOT NULL,
-    `name` VARCHAR
-(
-    256
-) NOT NULL,
-    `value` VARCHAR
-(
-    4096
-) NOT NULL,
-    `date_last_used` DATE,
-    CONSTRAINT `pk_settings_id` PRIMARY KEY
-(
-    `id`
-),
-    CONSTRAINT `fk_settings_service_id_service_id` FOREIGN KEY
-(
-    `service_id`
-) REFERENCES `services`
-(
-    `id`
-),
-    CONSTRAINT `uk_service_id_setting_name` UNIQUE KEY
-(
-    `service_id`,
-    `name`
-)
-    )
-    Engine = InnoDB
-;
+    public IllegalAccessException() {
+        super("Access denied for user. This user is not allowed to perform this action.");
+    }
+}

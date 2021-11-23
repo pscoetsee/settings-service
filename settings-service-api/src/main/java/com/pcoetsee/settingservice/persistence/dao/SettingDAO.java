@@ -34,7 +34,7 @@ import java.time.ZonedDateTime;
  * This table stores the settings for a specific service.
  */
 @Entity
-@Table(name = "settings")
+@Table(name = "`settings`")
 public class SettingDAO implements Serializable {
 
     private static final long serialVersionUID = 191468327370598534L;
@@ -43,33 +43,33 @@ public class SettingDAO implements Serializable {
      * The auto generated ID used in the table.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`id`")
     private Long id;
 
     /**
      * The ID of the service this setting belongs to.
      */
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ServiceDAO.class)
-    @JoinColumn(name = "service_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ServiceDAO.class, optional = false)
+    @JoinColumn(name = "`service_id`", referencedColumnName = "`id`")
     private ServiceDAO serviceDAO;
 
     /**
      * The unique name of the specific setting.
      */
-    @Column(name = "name")
+    @Column(name = "`name`")
     private String name;
 
     /**
      * The value of the specific setting.
      */
-    @Column(name = "value")
+    @Column(name = "`value`")
     private String value;
 
     /**
      * The date this setting was last requested.
      */
-    @Column(name = "date_last_used")
+    @Column(name = "`date_last_used`")
     private ZonedDateTime dateLastUsed;
 
     public Long getId() {

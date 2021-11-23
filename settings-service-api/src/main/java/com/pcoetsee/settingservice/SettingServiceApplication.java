@@ -28,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.time.ZonedDateTime;
@@ -51,5 +53,10 @@ public class SettingServiceApplication {
         LOGGER.info("[SSAPI]: Application reading current time as: [{}] using java 8 data/time api and as [{}] " +
                 "using old date api.", ZonedDateTime.now(), Calendar.getInstance().getTime()
         );
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

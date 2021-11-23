@@ -22,80 +22,36 @@
  * SOFTWARE.
  */
 
+SET MODE MYSQL;
+
 CREATE SCHEMA IF NOT EXISTS `settings_service`
 ;
 
 CREATE TABLE IF NOT EXISTS `settings_service`.`services`
 (
-    `id` BIGINT
-(
-    20
-) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR
-(
-    256
-) NOT NULL,
-    `password` VARCHAR
-(
-    2048
-) NOT NULL,
-    `role` ENUM
-(
-    'FULL',
-    'CREATE',
-    'READ'
-) NOT NULL DEFAULT 'READ',
-    `creation_time` BIGINT
-(
-    20
-) NOT NULL,
-    CONSTRAINT `pk_services_id` PRIMARY KEY
-(
-    `id`
-),
-    INDEX `idx_services_name`
-(
-    `name`
+    `id`            BIGINT(20)    NOT NULL AUTO_INCREMENT,
+    `name`          VARCHAR(1)    NOT NULL,
+    `password`      VARCHAR(2048) NOT NULL,
+    `admin`         TINYINT(1)    NOT NULL DEFAULT FALSE,
+    `creation_time` BIGINT(20)    NOT NULL,
+
+    CONSTRAINT `pk_services_id` PRIMARY KEY (`id`),
+    INDEX `idx_services_name` (`name`)
 )
-    )
     Engine = InnoDB
 ;
 
 CREATE TABLE IF NOT EXISTS `settings_service`.`settings`
 (
-    `id` BIGINT
-(
-    20
-) NOT NULL AUTO_INCREMENT,
-    `service_id` BIGINT
-(
-    20
-) NOT NULL,
-    `name` VARCHAR
-(
-    256
-) NOT NULL,
-    `value` VARCHAR
-(
-    4096
-) NOT NULL,
+    `id`             BIGINT(20)    NOT NULL AUTO_INCREMENT,
+    `service_id`     BIGINT(20)    NOT NULL,
+    `name`           VARCHAR(256)  NOT NULL,
+    `value`          VARCHAR(4096) NOT NULL,
     `date_last_used` DATE,
-    CONSTRAINT `pk_settings_id` PRIMARY KEY
-(
-    `id`
-),
-    CONSTRAINT `fk_settings_service_id_service_id` FOREIGN KEY
-(
-    `service_id`
-) REFERENCES `services`
-(
-    `id`
-),
-    CONSTRAINT `uk_service_id_setting_name` UNIQUE KEY
-(
-    `service_id`,
-    `name`
+
+    CONSTRAINT `pk_settings_id` PRIMARY KEY (`id`),
+    CONSTRAINT `fk_settings_service_id_service_id` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`),
+    CONSTRAINT `uk_service_id_setting_name` UNIQUE KEY (`service_id`, `name`)
 )
-    )
     Engine = InnoDB
 ;

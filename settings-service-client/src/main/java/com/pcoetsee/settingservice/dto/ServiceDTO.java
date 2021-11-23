@@ -24,13 +24,14 @@
 
 package com.pcoetsee.settingservice.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.ZonedDateTime;
 
 /**
  * Data transfer object for sending information regarding services from one place to another.
  */
-public class ServiceDTO implements Serializable {
+public class ServiceDTO {
 
     private static final long serialVersionUID = 8001563989116887460L;
 
@@ -40,9 +41,15 @@ public class ServiceDTO implements Serializable {
     private String name;
 
     /**
-     * Indicates whether the service is allowed to create new service records.
+     * The password for the service, won't be returned, but can be sent.
      */
-    private boolean admin;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    /**
+     * Indicates the services role
+     */
+    private String role;
 
     /**
      * The date and time this service was created.
@@ -57,12 +64,20 @@ public class ServiceDTO implements Serializable {
         this.name = name;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public ZonedDateTime getCreationTime() {
@@ -80,16 +95,19 @@ public class ServiceDTO implements Serializable {
 
         ServiceDTO that = (ServiceDTO) o;
 
-        if (isAdmin() != that.isAdmin()) return false;
-        if (!getName().equals(that.getName())) return false;
-        return getCreationTime().equals(that.getCreationTime());
+        if (getRole() != null ? !getRole().equals(that.getRole()) : that.getRole() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getPassword() != null ? !getPassword().equals(that.getPassword()) : that.getPassword() != null)
+            return false;
+        return getCreationTime() != null ? getCreationTime().equals(that.getCreationTime()) : that.getCreationTime() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getName().hashCode();
-        result = 31 * result + (isAdmin() ? 1 : 0);
-        result = 31 * result + getCreationTime().hashCode();
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getRole().hashCode());
+        result = 31 * result + (getCreationTime() != null ? getCreationTime().hashCode() : 0);
         return result;
     }
 
@@ -97,7 +115,8 @@ public class ServiceDTO implements Serializable {
     public String toString() {
         return "ServiceDTO{" +
                 "name='" + name + '\'' +
-                ", admin=" + admin +
+                ", password='" + password + '\'' +
+                ", role=" + role +
                 ", creationTime=" + creationTime +
                 '}';
     }
